@@ -84,6 +84,7 @@ Frontend
 | Vanilla JavaScript | Interactivity & API calls |
 | Google Fonts | Orbitron & Rajdhani fonts |
 | LocalStorage | Session & profile storage |
+
 Backend
 | Technology | Version | Purpose |
 |------------|---------|---------|
@@ -94,13 +95,18 @@ Backend
 | MySQL | 8.0 | Database |
 | Maven | - | Build tool |
 | Java | 21 | Programming language |
+
 Installation Guide
+
 Prerequisites
+
 | Software | Version |
 |----------|---------|
 | Java JDK | 17 or 21 |
 | MySQL | 8.0+ |
 | Maven | 3.8+ |
+
 📧 Contact
+
 Email: priyaofficial1516@email.com
 GitHub: github.com/priya16150
