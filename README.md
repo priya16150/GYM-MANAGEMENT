@@ -14,6 +14,8 @@
 </div>
 📌 Project Overview
 Gym Management System is a **full-stack web application** designed to streamline gym operations. It replaces traditional paper-based management with a digital solution for managing members, trainers, workout plans, and payments.
+
+
 🎯 Key Highlights
 ✅ **Complete CRUD Operations** on all module
 ✅ **Galaxy Themed UI** with stunning animations
@@ -26,10 +28,12 @@ Gym Management System is a **full-stack web application** designed to streamline
 - User registration with username/password
 - Secure login with JWT token generation
 - Session management using localStorage
+- 
 2. 👥 Member Management
 - Add, view, edit, and delete members
 - Track member status (ACTIVE/INACTIVE)
 - Store member details: Name, Email, Phone, Join Date
+  
  3. 🏋️ Trainer Management
  - Complete trainer profile management
 - **50+ specialization options** with categories:
