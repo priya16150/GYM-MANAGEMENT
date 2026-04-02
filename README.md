@@ -17,6 +17,7 @@ Gym Management System is a **full-stack web application** designed to streamline
 
 
 🎯 Key Highlights
+
 ✅ **Complete CRUD Operations** on all module
 ✅ **Galaxy Themed UI** with stunning animations
 ✅ **Secure Authentication** using JWT tokens
