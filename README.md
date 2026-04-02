@@ -43,6 +43,7 @@ Gym Management System is a **full-stack web application** designed to streamline
 - Store member details: Name, Email, Phone, Join Date
   
  3. 🏋️ Trainer Management
+
  - Complete trainer profile management
 - **50+ specialization options** with categories:
   - Strength & Power (5 options)
@@ -54,37 +55,51 @@ Gym Management System is a **full-stack web application** designed to streamline
   - Advanced Techniques (6 options)
   - Health & Wellness (6 options)
 - Track trainer experience in years
+  
+4. 📋 Workout Plans
+   
+- Create and manage membership plans
+- Set plan name, duration, price, and description
+- Edit and delete existing plans
+- 
 4. 📋 Workout Plans
 - Create and manage membership plans
 - Set plan name, duration, price, and description
 - Edit and delete existing plans
-4. 📋 Workout Plans
-- Create and manage membership plans
-- Set plan name, duration, price, and description
-- Edit and delete existing plans
+  
  5. 💰 Payment Tracking
+
 - Record member payments
 - Track payment status (PAID/PENDING)
 - Edit payment details (change PENDING to PAID)
 - Delete payment records
+  
 6. 📊 Interactive Dashboard
+
 - Real-time statistics display
 - Animated counter effects
 - Quick navigation to all modules
 - Click on cards to view detailed lists
+
 7. 👤 Profile Management
+   
 - Upload profile picture (auto-save to localStorage)
 - Edit personal details (Name, Email, Phone)
 - View membership information
+  
 8. 🎨 Galaxy Theme UI
+   
 - Twinkling stars (200+)
 - Floating nebulae with pulse animation
 - Cosmic dust particles
 - Shooting stars effects
 - Glassmorphic design with blur effects
 - Smooth hover animations
+  
 🛠️ Tech Stack
+
 Frontend
+
 | Technology | Purpose |
 |------------|---------|
 | HTML5 | Page structure |
@@ -94,14 +109,23 @@ Frontend
 | LocalStorage | Session & profile storage |
 
 Backend
+
 | Technology | Version | Purpose |
+
 |------------|---------|---------|
+
 | Spring Boot | 3.2.5 | Backend framework |
+
 | Spring Data JPA | - | Database operations |
+
 | Spring Web | - | REST APIs |
+
 | JWT | 0.11.5 | Authentication |
+
 | MySQL | 8.0 | Database |
+
 | Maven | - | Build tool |
+
 | Java | 21 | Programming language |
 
 Installation Guide
@@ -109,9 +133,13 @@ Installation Guide
 Prerequisites
 
 | Software | Version |
+
 |----------|---------|
+
 | Java JDK | 17 or 21 |
+
 | MySQL | 8.0+ |
+
 | Maven | 3.8+ |
 
 📧 Contact
