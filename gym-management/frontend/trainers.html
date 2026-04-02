@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trainers | Gym Universe</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #020010;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Galaxy Animation Layers */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle linear infinite;
+      box-shadow: 0 0 3px rgba(255,255,255,0.8);
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+    
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      animation: nebulaPulse ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes nebulaPulse {
+      0%, 100% { transform: scale(1); opacity: 0.2; }
+      50% { transform: scale(1.2); opacity: 0.45; }
+    }
+    
+    .n1 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #9b4dff, #2a00aa, transparent);
+      top: -180px;
+      left: -180px;
+      animation-duration: 9s;
+    }
+    
+    .n2 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #00a6ff, #0044cc, transparent);
+      bottom: -120px;
+      right: -100px;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+    
+    .n3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #ff44cc, #aa22aa, transparent);
+      top: 40%;
+      left: 60%;
+      animation-duration: 12s;
+      animation-delay: 1s;
+      filter: blur(100px);
+    }
+    
+    /* Cosmic Dust */
+    .cosmic-dust {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .dust {
+      position: absolute;
+      background: rgba(255, 200, 255, 0.4);
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: floatDust linear infinite;
+    }
+    
+    @keyframes floatDust {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100vh) translateX(40px) rotate(360deg); opacity: 0; }
+    }
+    
+    /* Navbar */
+    .navbar {
+      background: rgba(10, 0, 40, 0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(123, 47, 255, 0.4);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .navbar h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #9b4dff, #00cfff, #ff66cc);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: galaxyShine 5s linear infinite;
+      letter-spacing: 3px;
+    }
+    
+    @keyframes galaxyShine {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    
+    .nav-links a {
+      color: rgba(170, 140, 255, 0.8);
+      text-decoration: none;
+      margin-left: 22px;
+      font-size: 12px;
+      padding: 7px 16px;
+      border-radius: 30px;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+    }
+    
+    .nav-links a:hover {
+      color: #fff;
+      border-color: rgba(155, 77, 255, 0.6);
+      background: rgba(123, 47, 255, 0.2);
+      box-shadow: 0 0 12px rgba(155, 77, 255, 0.5);
+    }
+    
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-badge {
+      background: rgba(123, 47, 255, 0.25);
+      border: 1px solid rgba(155, 77, 255, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #cbb2ff;
+      font-family: 'Orbitron', monospace;
+      backdrop-filter: blur(4px);
+    }
+    
+    .logout-btn {
+      background: rgba(255, 80, 120, 0.2);
+      border: 1px solid rgba(255, 80, 120, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #ff6680;
+      cursor: pointer;
+      font-family: 'Orbitron', monospace;
+      transition: all 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 80, 120, 0.4);
+      box-shadow: 0 0 10px #ff3366;
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    /* Container */
+    .container {
+      padding: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #b77eff, #3cc7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 4px;
+      animation: fadeInUp 0.6s ease both;
+      text-shadow: 0 0 8px rgba(155,77,255,0.3);
+    }
+    
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    /* Form Card */
+    .form-card {
+      background: rgba(12, 2, 32, 0.7);
+      border: 1px solid rgba(123, 47, 255, 0.4);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 35px;
+      backdrop-filter: blur(16px);
+      animation: fadeInUp 0.6s ease 0.08s both;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    
+    .form-card h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #d4b5ff;
+      letter-spacing: 2px;
+      border-left: 3px solid #9b4dff;
+      padding-left: 12px;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(155, 77, 255, 0.08);
+      border: 1px solid rgba(155, 77, 255, 0.35);
+      border-radius: 14px;
+      color: #f0f0ff;
+      font-size: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239b4dff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    
+    select optgroup {
+      background: #0a0028;
+      color: #e0ccff;
+      font-weight: bold;
+      font-family: 'Orbitron', monospace;
+      font-size: 12px;
+    }
+    
+    select option {
+      background: #0a0028;
+      color: #e0ccff;
+      padding: 10px;
+    }
+    
+    input:focus, select:focus {
+      border-color: #b77eff;
+      background: rgba(155, 77, 255, 0.18);
+      box-shadow: 0 0 18px rgba(155, 77, 255, 0.3);
+    }
+    
+    input::placeholder {
+      color: rgba(170, 140, 255, 0.5);
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 10px 28px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1.2px;
+      transition: all 0.25s;
+      font-weight: 600;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(115deg, #7b2fff, #3c67ff);
+      color: white;
+      box-shadow: 0 4px 12px rgba(123,47,255,0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(123, 47, 255, 0.5);
+      background: linear-gradient(115deg, #8f47ff, #4f77ff);
+    }
+    
+    .btn-clear {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(210, 180, 255, 0.8);
+      border: 1px solid rgba(155, 77, 255, 0.4);
+      margin-left: 12px;
+    }
+    
+    .btn-clear:hover {
+      background: rgba(155, 77, 255, 0.25);
+      color: white;
+    }
+    
+    .btn-edit {
+      background: rgba(255, 200, 0, 0.2);
+      color: #ffd966;
+      border: 1px solid rgba(255, 200, 0, 0.4);
+      margin-right: 8px;
+      padding: 6px 16px;
+      font-size: 11px;
+    }
+    
+    .btn-edit:hover {
+      background: rgba(255, 200, 0, 0.35);
+      transform: scale(0.96);
+    }
+    
+    .btn-danger {
+      background: rgba(255, 70, 110, 0.2);
+      color: #ff6680;
+      border: 1px solid rgba(255, 70, 110, 0.5);
+      padding: 6px 16px;
+      font-size: 11px;
+    }
+    
+    .btn-danger:hover {
+      background: rgba(255, 70, 110, 0.4);
+      color: #ffa0b0;
+      transform: scale(0.96);
+    }
+    
+    /* Messages */
+    .msg {
+      padding: 12px 20px;
+      border-radius: 40px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .success {
+      background: rgba(0, 210, 150, 0.12);
+      border: 1px solid rgba(0, 255, 180, 0.4);
+      color: #80ffcc;
+    }
+    
+    .error {
+      background: rgba(255, 70, 100, 0.12);
+      border: 1px solid rgba(255, 80, 120, 0.4);
+      color: #ff8095;
+    }
+    
+    /* Table */
+    .glass-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(8, 0, 28, 0.65);
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(123, 47, 255, 0.25);
+      animation: fadeInUp 0.6s ease 0.15s both;
+    }
+    
+    .glass-table th {
+      background: rgba(100, 50, 200, 0.3);
+      color: #dac5ff;
+      padding: 14px 18px;
+      text-align: left;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      border-bottom: 1px solid rgba(155, 77, 255, 0.4);
+    }
+    
+    .glass-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(123, 47, 255, 0.15);
+      font-size: 14px;
+      color: #ececff;
+    }
+    
+    .glass-table tr:hover td {
+      background: rgba(123, 47, 255, 0.12);
+      transition: 0.2s;
+    }
+    
+    /* Badges */
+    .spec-badge {
+      background: linear-gradient(135deg, rgba(155, 77, 255, 0.2), rgba(0, 102, 255, 0.2));
+      border: 1px solid rgba(155, 77, 255, 0.5);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      display: inline-block;
+    }
+    
+    .exp-badge {
+      background: rgba(0, 200, 255, 0.15);
+      border: 1px solid rgba(0, 200, 255, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      display: inline-block;
+    }
+    
+    @media (max-width: 780px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; gap: 12px; }
+      .container { padding: 20px; }
+      .glass-table th, .glass-table td { padding: 10px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Galaxy Background Layers -->
+  <div class="stars" id="stars"></div>
+  <div class="nebula n1"></div>
+  <div class="nebula n2"></div>
+  <div class="nebula n3"></div>
+  <div class="cosmic-dust" id="cosmicDust"></div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1>🏃 GYM UNIVERSE</h1>
+    <div class="nav-links">
+      <a href="dashboard.html">⚡ DASHBOARD</a>
+      <a href="members.html">👥 MEMBERS</a>
+      <a href="trainers.html">🏋️ TRAINERS</a>
+      <a href="plans.html">📘 PLANS</a>
+      <a href="payments.html">💰 PAYMENTS</a>
+    </div>
+    <div class="nav-right">
+      <span class="user-badge" id="userBadge">🌙 USER</span>
+      <button class="logout-btn" onclick="logout()">⛌ LOGOUT</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-title">✦ GYM TRAINERS ✦</div>
+    <div id="msg"></div>
+
+    <!-- Add/Edit Trainer Form -->
+    <div class="form-card">
+      <h3 id="formTitle">⬩ ADD NEW TRAINER</h3>
+      <input type="hidden" id="trainerId">
+      <div class="form-grid">
+        <input type="text" id="name" placeholder="Trainer Name">
+        <input type="email" id="email" placeholder="Email Address">
+        <select id="specialization">
+          <option value="">🔽 Select Specialization</option>
+          
+          <optgroup label="🏋️ STRENGTH & POWER">
+            <option value="🏋️ Strength Training">🏋️ Strength Training</option>
+            <option value="💪 Powerlifting">💪 Powerlifting</option>
+            <option value="🏋️ Olympic Weightlifting">🏋️ Olympic Weightlifting</option>
+            <option value="💪 Bodybuilding">💪 Bodybuilding</option>
+            <option value="⚡ Functional Training">⚡ Functional Training</option>
+          </optgroup>
+          
+          <optgroup label="🧘 MIND & BODY">
+            <option value="🧘 Yoga">🧘 Yoga</option>
+            <option value="🕉️ Meditation">🕉️ Meditation</option>
+            <option value="🦵 Pilates">🦵 Pilates</option>
+            <option value="🌿 Pranayama">🌿 Pranayama</option>
+            <option value="🧘‍♀️ Hatha Yoga">🧘‍♀️ Hatha Yoga</option>
+            <option value="🔥 Vinyasa Flow">🔥 Vinyasa Flow</option>
+          </optgroup>
+          
+          <optgroup label="🏃 CARDIO & ENDURANCE">
+            <option value="🏃 Running Coach">🏃 Running Coach</option>
+            <option value="🚴 Cycling">🚴 Cycling</option>
+            <option value="🏊 Swimming">🏊 Swimming</option>
+            <option value="⚡ HIIT Training">⚡ HIIT Training</option>
+            <option value="🏃‍♂️ Marathon Training">🏃‍♂️ Marathon Training</option>
+            <option value="🚶‍♀️ Walking Fitness">🚶‍♀️ Walking Fitness</option>
+          </optgroup>
+          
+          <optgroup label="🥊 MARTIAL ARTS & COMBAT">
+            <option value="🥊 Boxing">🥊 Boxing</option>
+            <option value="🥋 MMA">🥋 MMA</option>
+            <option value="🥋 Karate">🥋 Karate</option>
+            <option value="👊 Muay Thai">👊 Muay Thai</option>
+            <option value="🤼‍♂️ Judo">🤼‍♂️ Judo</option>
+            <option value="🥋 Brazilian Jiu-Jitsu">🥋 Brazilian Jiu-Jitsu</option>
+            <option value="🥊 Kickboxing">🥊 Kickboxing</option>
+            <option value="⚔️ Taekwondo">⚔️ Taekwondo</option>
+          </optgroup>
+          
+          <optgroup label="🎯 SPECIALIZED TRAINING">
+            <option value="🎯 CrossFit">🎯 CrossFit</option>
+            <option value="🩺 Rehabilitation">🩺 Rehabilitation</option>
+            <option value="👵 Senior Fitness">👵 Senior Fitness</option>
+            <option value="🤰 Prenatal Fitness">🤰 Prenatal Fitness</option>
+            <option value="👶 Kids Fitness">👶 Kids Fitness</option>
+            <option value="🏋️ Athletic Performance">🏋️ Athletic Performance</option>
+            <option value="⚽ Sports Conditioning">⚽ Sports Conditioning</option>
+            <option value="🔄 Mobility & Flexibility">🔄 Mobility & Flexibility</option>
+          </optgroup>
+          
+          <optgroup label="💃 DANCE & AEROBICS">
+            <option value="💃 Zumba">💃 Zumba</option>
+            <option value="🕺 Dance Fitness">🕺 Dance Fitness</option>
+            <option value="🎵 Aerobics">🎵 Aerobics</option>
+            <option value="💪 Step Aerobics">💪 Step Aerobics</option>
+            <option value="🔥 Hip Hop Fitness">🔥 Hip Hop Fitness</option>
+          </optgroup>
+          
+          <optgroup label="🧘 ADVANCED TECHNIQUES">
+            <option value="🧘 AcroYoga">🧘 AcroYoga</option>
+            <option value="🔮 Aerial Yoga">🔮 Aerial Yoga</option>
+            <option value="🧘 Hot Yoga">🧘 Hot Yoga</option>
+            <option value="💪 Calisthenics">💪 Calisthenics</option>
+            <option value="🏋️ Gymnastics">🏋️ Gymnastics</option>
+            <option value="⛰️ Outdoor Training">⛰️ Outdoor Training</option>
+          </optgroup>
+          
+          <optgroup label="🩺 HEALTH & WELLNESS">
+            <option value="🥗 Nutrition Coach">🥗 Nutrition Coach</option>
+            <option value="💪 Weight Management">💪 Weight Management</option>
+            <option value="🩺 Personal Training">🩺 Personal Training</option>
+            <option value="🧠 Mental Wellness">🧠 Mental Wellness</option>
+            <option value="🩹 Injury Prevention">🩹 Injury Prevention</option>
+            <option value="💊 Sports Nutrition">💊 Sports Nutrition</option>
+          </optgroup>
+        </select>
+        <input type="number" id="experience" placeholder="Experience (years)">
+      </div>
+      <button class="btn btn-primary" onclick="saveTrainer()">💫 SAVE TRAINER</button>
+      <button class="btn btn-clear" onclick="resetForm()">🪐 CLEAR</button>
+    </div>
+
+    <!-- Trainers Table -->
+    <table class="glass-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+          <th>EMAIL</th>
+          <th>SPECIALIZATION</th>
+          <th>EXPERIENCE</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="trainerTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Generate Stars
+    const starContainer = document.getElementById('stars');
+    for (let i = 0; i < 180; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2.8 + 0.5;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${Math.random() * 3 + 1.8}s`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      starContainer.appendChild(star);
+    }
+
+    // Generate Cosmic Dust
+    const dustLayer = document.getElementById('cosmicDust');
+    for (let i = 0; i < 60; i++) {
+      const dust = document.createElement('div');
+      dust.classList.add('dust');
+      const wh = Math.random() * 3 + 1;
+      dust.style.width = `${wh}px`;
+      dust.style.height = `${wh}px`;
+      dust.style.left = `${Math.random() * 100}%`;
+      dust.style.bottom = `-10px`;
+      dust.style.animationDuration = `${Math.random() * 8 + 6}s`;
+      dust.style.animationDelay = `${Math.random() * 8}s`;
+      dust.style.opacity = Math.random() * 0.6 + 0.2;
+      dustLayer.appendChild(dust);
+    }
+
+    // User Badge & Logout
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      document.getElementById('userBadge').innerHTML = `👾 ${storedUsername.toUpperCase()}`;
+    } else {
+      document.getElementById('userBadge').innerHTML = `🌟 GUEST`;
+    }
+
+    function logout() {
+      showMsg('👋 Logging out from the universe...', 'success');
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000);
+    }
+
+    const API = 'http://localhost:8080/api/trainers';
+
+    function showMsg(text, type) {
+      const msg = document.getElementById('msg');
+      msg.innerHTML = `<div class="msg ${type}">🏃 ${text}</div>`;
+      setTimeout(() => msg.innerHTML = '', 3400);
+    }
+
+    async function loadTrainers() {
+      try {
+        const res = await fetch(API);
+        if (!res.ok) throw new Error('API error');
+        const trainers = await res.json();
+        const tbody = document.getElementById('trainerTable');
+        tbody.innerHTML = '';
+        if (trainers.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#aa99ff;">✨ No trainers yet. Add your first galactic trainer! ✨</td></tr>`;
+          return;
+        }
+        trainers.forEach(t => {
+          const row = tbody.insertRow();
+          row.insertCell(0).innerText = t.id;
+          row.insertCell(1).innerHTML = `<strong style="color:#b77eff;">${t.name}</strong>`;
+          row.insertCell(2).innerText = t.email;
+          row.insertCell(3).innerHTML = `<span class="spec-badge">${t.specialization || '—'}</span>`;
+          row.insertCell(4).innerHTML = `<span class="exp-badge">⭐ ${t.experience} years</span>`;
+          const actionCell = row.insertCell(5);
+          actionCell.innerHTML = `
+            <button class="btn btn-edit" onclick="editTrainer(${t.id}, '${t.name.replace(/'/g, "\\'")}', '${t.email.replace(/'/g, "\\'")}', '${(t.specialization || '').replace(/'/g, "\\'")}', ${t.experience})">✏ EDIT</button>
+            <button class="btn btn-danger" onclick="deleteTrainer(${t.id})">🗑 DELETE</button>
+          `;
+        });
+      } catch (err) {
+        showMsg('Cannot connect to cosmic server: ' + err.message, 'error');
+      }
+    }
+
+    async function saveTrainer() {
+      const id = document.getElementById('trainerId').value;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const specialization = document.getElementById('specialization').value;
+      const experience = document.getElementById('experience').value;
+
+      if (!name || !email || !specialization || !experience) {
+        showMsg('Please fill all fields!', 'error');
+        return;
+      }
+
+      const data = {
+        name: name,
+        email: email,
+        specialization: specialization,
+        experience: parseInt(experience)
+      };
+
+      const url = id ? `${API}/${id}` : API;
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          showMsg(id ? '✅ Trainer updated successfully!' : '✅ Trainer added to the galaxy!', 'success');
+          resetForm();
+          loadTrainers();
+        } else {
+          const err = await res.json();
+          showMsg('❌ Failed: ' + JSON.stringify(err), 'error');
+        }
+      } catch (err) {
+        showMsg('Connection error: ' + err.message, 'error');
+      }
+    }
+
+    function editTrainer(id, name, email, specialization, experience) {
+      document.getElementById('trainerId').value = id;
+      document.getElementById('name').value = name;
+      document.getElementById('email').value = email;
+      document.getElementById('specialization').value = specialization;
+      document.getElementById('experience').value = experience;
+      document.getElementById('formTitle').textContent = '⬩ EDIT TRAINER';
+    }
+
+    async function deleteTrainer(id) {
+      if (!confirm('⚠️ Remove this trainer from the galaxy?')) return;
+      try {
+        const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          showMsg('✅ Trainer deleted successfully!', 'success');
+          loadTrainers();
+        } else {
+          showMsg('Delete failed', 'error');
+        }
+      } catch (err) {
+        showMsg('Delete error: ' + err.message, 'error');
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('trainerId').value = '';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('specialization').value = '';
+      document.getElementById('experience').value = '';
+      document.getElementById('formTitle').textContent = '⬩ ADD NEW TRAINER';
+    }
+
+    loadTrainers();
+  </script>
+</body>
+</html>

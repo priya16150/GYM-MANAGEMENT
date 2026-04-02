@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Members | Gym Universe</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #020010;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Galaxy Animation Layers */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle linear infinite;
+      box-shadow: 0 0 3px rgba(255,255,255,0.8);
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+    
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      animation: nebulaPulse ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes nebulaPulse {
+      0%, 100% { transform: scale(1); opacity: 0.2; }
+      50% { transform: scale(1.2); opacity: 0.45; }
+    }
+    
+    .n1 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #9b4dff, #2a00aa, transparent);
+      top: -180px;
+      left: -180px;
+      animation-duration: 9s;
+    }
+    
+    .n2 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #00a6ff, #0044cc, transparent);
+      bottom: -120px;
+      right: -100px;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+    
+    .n3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #ff44cc, #aa22aa, transparent);
+      top: 40%;
+      left: 60%;
+      animation-duration: 12s;
+      animation-delay: 1s;
+      filter: blur(100px);
+    }
+    
+    /* Cosmic Dust */
+    .cosmic-dust {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .dust {
+      position: absolute;
+      background: rgba(255, 200, 255, 0.4);
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: floatDust linear infinite;
+    }
+    
+    @keyframes floatDust {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100vh) translateX(40px) rotate(360deg); opacity: 0; }
+    }
+    
+    /* Shooting Stars */
+    .shoot {
+      position: fixed;
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #7b2fff, white);
+      border-radius: 2px;
+      animation: shoot linear infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    @keyframes shoot {
+      0% { transform: translateX(-200px) translateY(0) rotate(-35deg); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateX(110vw) translateY(80vh) rotate(-35deg); opacity: 0; }
+    }
+    
+    /* Navbar */
+    .navbar {
+      background: rgba(10, 0, 40, 0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(123, 47, 255, 0.4);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: slideDown 0.6s ease;
+    }
+    
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .navbar h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #9b4dff, #00cfff, #ff66cc);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: galaxyShine 5s linear infinite;
+      letter-spacing: 3px;
+    }
+    
+    @keyframes galaxyShine {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    
+    .nav-links a {
+      color: rgba(170, 140, 255, 0.8);
+      text-decoration: none;
+      margin-left: 22px;
+      font-size: 12px;
+      padding: 7px 16px;
+      border-radius: 30px;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+    }
+    
+    .nav-links a:hover {
+      color: #fff;
+      border-color: rgba(155, 77, 255, 0.6);
+      background: rgba(123, 47, 255, 0.2);
+      box-shadow: 0 0 12px rgba(155, 77, 255, 0.5);
+      transform: translateY(-2px);
+    }
+    
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .profile-icon {
+      background: linear-gradient(135deg, #7b2fff, #0066ff);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid rgba(255,255,255,0.3);
+      overflow: hidden;
+    }
+    
+    .profile-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(123,47,255,0.5);
+    }
+    
+    .profile-icon img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .user-badge {
+      background: rgba(123, 47, 255, 0.25);
+      border: 1px solid rgba(155, 77, 255, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #cbb2ff;
+      font-family: 'Orbitron', monospace;
+      backdrop-filter: blur(4px);
+    }
+    
+    .logout-btn {
+      background: rgba(255, 80, 120, 0.2);
+      border: 1px solid rgba(255, 80, 120, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #ff6680;
+      cursor: pointer;
+      font-family: 'Orbitron', monospace;
+      transition: all 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 80, 120, 0.4);
+      box-shadow: 0 0 15px rgba(255, 80, 120, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    /* Container */
+    .container {
+      padding: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #b77eff, #3cc7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 4px;
+      animation: fadeInUp 0.6s ease both;
+      text-shadow: 0 0 8px rgba(155,77,255,0.3);
+    }
+    
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    /* Form Card */
+    .form-card {
+      background: rgba(12, 2, 32, 0.7);
+      border: 1px solid rgba(123, 47, 255, 0.4);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 35px;
+      backdrop-filter: blur(16px);
+      animation: fadeInUp 0.6s ease 0.08s both;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    
+    .form-card h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #d4b5ff;
+      letter-spacing: 2px;
+      border-left: 3px solid #9b4dff;
+      padding-left: 12px;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(155, 77, 255, 0.08);
+      border: 1px solid rgba(155, 77, 255, 0.35);
+      border-radius: 14px;
+      color: #f0f0ff;
+      font-size: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+    
+    input:focus, select:focus {
+      border-color: #b77eff;
+      background: rgba(155, 77, 255, 0.18);
+      box-shadow: 0 0 18px rgba(155, 77, 255, 0.3);
+    }
+    
+    input::placeholder {
+      color: rgba(170, 140, 255, 0.5);
+    }
+    
+    select option {
+      background: #0a0028;
+      color: #e0ccff;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 10px 28px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1.2px;
+      transition: all 0.25s;
+      font-weight: 600;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(115deg, #7b2fff, #3c67ff);
+      color: white;
+      box-shadow: 0 4px 12px rgba(123,47,255,0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(123, 47, 255, 0.5);
+      background: linear-gradient(115deg, #8f47ff, #4f77ff);
+    }
+    
+    .btn-clear {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(210, 180, 255, 0.8);
+      border: 1px solid rgba(155, 77, 255, 0.4);
+      margin-left: 12px;
+    }
+    
+    .btn-clear:hover {
+      background: rgba(155, 77, 255, 0.25);
+      color: white;
+    }
+    
+    .btn-edit {
+      background: rgba(255, 200, 0, 0.2);
+      color: #ffd966;
+      border: 1px solid rgba(255, 200, 0, 0.4);
+      margin-right: 8px;
+      padding: 6px 16px;
+      font-size: 11px;
+    }
+    
+    .btn-edit:hover {
+      background: rgba(255, 200, 0, 0.35);
+      transform: scale(0.96);
+    }
+    
+    .btn-danger {
+      background: rgba(255, 70, 110, 0.2);
+      color: #ff6680;
+      border: 1px solid rgba(255, 70, 110, 0.5);
+      padding: 6px 16px;
+      font-size: 11px;
+    }
+    
+    .btn-danger:hover {
+      background: rgba(255, 70, 110, 0.4);
+      color: #ffa0b0;
+      transform: scale(0.96);
+    }
+    
+    /* Messages */
+    .msg {
+      padding: 12px 20px;
+      border-radius: 40px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .success {
+      background: rgba(0, 210, 150, 0.12);
+      border: 1px solid rgba(0, 255, 180, 0.4);
+      color: #80ffcc;
+    }
+    
+    .error {
+      background: rgba(255, 70, 100, 0.12);
+      border: 1px solid rgba(255, 80, 120, 0.4);
+      color: #ff8095;
+    }
+    
+    /* Table */
+    .glass-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(8, 0, 28, 0.65);
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(123, 47, 255, 0.25);
+      animation: fadeInUp 0.6s ease 0.15s both;
+    }
+    
+    .glass-table th {
+      background: rgba(100, 50, 200, 0.3);
+      color: #dac5ff;
+      padding: 14px 18px;
+      text-align: left;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      border-bottom: 1px solid rgba(155, 77, 255, 0.4);
+    }
+    
+    .glass-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(123, 47, 255, 0.15);
+      font-size: 14px;
+      color: #ececff;
+    }
+    
+    .glass-table tr:hover td {
+      background: rgba(123, 47, 255, 0.12);
+      transition: 0.2s;
+    }
+    
+    /* Badges */
+    .badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+      display: inline-block;
+    }
+    
+    .badge-active {
+      background: rgba(0, 255, 150, 0.12);
+      border: 1px solid rgba(0, 255, 150, 0.4);
+      color: #44ffaa;
+    }
+    
+    .badge-inactive {
+      background: rgba(255, 70, 100, 0.12);
+      border: 1px solid rgba(255, 70, 100, 0.4);
+      color: #ff6680;
+    }
+    
+    @media (max-width: 780px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; gap: 12px; }
+      .container { padding: 20px; }
+      .glass-table th, .glass-table td { padding: 10px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Galaxy Background Layers -->
+  <div class="stars" id="stars"></div>
+  <div class="nebula n1"></div>
+  <div class="nebula n2"></div>
+  <div class="nebula n3"></div>
+  <div class="cosmic-dust" id="cosmicDust"></div>
+  
+  <!-- Shooting Stars -->
+  <div class="shoot" style="top:15%; animation-duration:4.5s; animation-delay:0s;"></div>
+  <div class="shoot" style="top:45%; animation-duration:6s; animation-delay:2s;"></div>
+  <div class="shoot" style="top:75%; animation-duration:5s; animation-delay:3.5s;"></div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1>🏃 GYM UNIVERSE</h1>
+    <div class="nav-links">
+      <a href="dashboard.html">⚡ DASHBOARD</a>
+      <a href="members.html">👥 MEMBERS</a>
+      <a href="trainers.html">🏋️ TRAINERS</a>
+      <a href="plans.html">📘 PLANS</a>
+      <a href="payments.html">💰 PAYMENTS</a>
+    </div>
+    <div class="nav-right">
+      <div class="profile-icon" onclick="window.location.href='profile.html'">
+        <img id="navProfileImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Profile">
+      </div>
+      <span class="user-badge" id="userBadge">🌙 USER</span>
+      <button class="logout-btn" onclick="logout()">⛌ LOGOUT</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-title">✦ GALACTIC MEMBERS ✦</div>
+    <div id="msg"></div>
+
+    <!-- Add/Edit Member Form -->
+    <div class="form-card">
+      <h3 id="formTitle">⬩ ADD NEW MEMBER</h3>
+      <input type="hidden" id="memberId">
+      <div class="form-grid">
+        <input type="text" id="name" placeholder="Member Name">
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="text" id="phone" placeholder="Phone (10 digits)">
+        <input type="date" id="joinDate">
+        <select id="status">
+          <option value="ACTIVE">✨ ACTIVE</option>
+          <option value="INACTIVE">🌙 INACTIVE</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="saveMember()">💫 SAVE MEMBER</button>
+      <button class="btn btn-clear" onclick="resetForm()">🪐 CLEAR</button>
+    </div>
+
+    <!-- Members Table -->
+    <table class="glass-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+          <th>EMAIL</th>
+          <th>PHONE</th>
+          <th>JOIN DATE</th>
+          <th>STATUS</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="memberTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Generate Stars (Enhanced)
+    const starContainer = document.getElementById('stars');
+    for(let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2.8 + 0.5;
+      star.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        top: ${Math.random() * 100}%;
+        left: ${Math.random() * 100}%;
+        animation-duration: ${Math.random() * 3 + 1.8}s;
+        animation-delay: ${Math.random() * 5}s;
+      `;
+      starContainer.appendChild(star);
+    }
+
+    // Generate Cosmic Dust
+    const dustLayer = document.getElementById('cosmicDust');
+    for(let i = 0; i < 80; i++) {
+      const dust = document.createElement('div');
+      dust.classList.add('dust');
+      const wh = Math.random() * 3 + 1;
+      dust.style.width = `${wh}px`;
+      dust.style.height = `${wh}px`;
+      dust.style.left = `${Math.random() * 100}%`;
+      dust.style.bottom = `-10px`;
+      dust.style.animationDuration = `${Math.random() * 8 + 6}s`;
+      dust.style.animationDelay = `${Math.random() * 8}s`;
+      dust.style.opacity = Math.random() * 0.6 + 0.2;
+      dustLayer.appendChild(dust);
+    }
+
+    // User Badge & Profile
+    const storedUsername = localStorage.getItem('username');
+    if(storedUsername) {
+      document.getElementById('userBadge').innerHTML = `👾 ${storedUsername.toUpperCase()}`;
+    } else {
+      document.getElementById('userBadge').innerHTML = `🌟 GUEST`;
+    }
+    
+    // Load profile picture if exists
+    const savedProfile = localStorage.getItem(`profile_${storedUsername}`);
+    if(savedProfile) {
+      const profile = JSON.parse(savedProfile);
+      if(profile.avatar) {
+        document.getElementById('navProfileImg').src = profile.avatar;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      window.location.href = 'index.html';
+    }
+
+    const API = 'http://localhost:8080/api/members';
+    
+    function showMsg(text, type) {
+      const msgDiv = document.getElementById('msg');
+      msgDiv.innerHTML = `<div class="msg ${type}">🏃 ${text}</div>`;
+      setTimeout(() => msgDiv.innerHTML = '', 3400);
+    }
+
+    async function loadMembers() {
+      try {
+        const res = await fetch(API);
+        if (!res.ok) throw new Error('API error');
+        const members = await res.json();
+        const tbody = document.getElementById('memberTable');
+        tbody.innerHTML = '';
+        if (members.length === 0) {
+          tbody.innerHTML = `应用<td colspan="7" style="text-align:center; color:#aa99ff;">✨ No members yet. Add your first galactic member! ✨</td></tr>`;
+          return;
+        }
+        members.forEach(m => {
+          const row = tbody.insertRow();
+          row.insertCell(0).innerText = m.id;
+          row.insertCell(1).innerHTML = `<strong style="color:#b77eff;">${m.name}</strong>`;
+          row.insertCell(2).innerText = m.email;
+          row.insertCell(3).innerText = m.phone;
+          row.insertCell(4).innerText = m.joinDate || '-';
+          row.insertCell(5).innerHTML = `<span class="badge badge-${m.status === 'ACTIVE' ? 'active' : 'inactive'}">${m.status === 'ACTIVE' ? '✨ ACTIVE' : '🌙 INACTIVE'}</span>`;
+          const actionCell = row.insertCell(6);
+          actionCell.innerHTML = `
+            <button class="btn btn-edit" onclick="editMember(${m.id}, '${m.name.replace(/'/g, "\\'")}', '${m.email.replace(/'/g, "\\'")}', '${m.phone.replace(/'/g, "\\'")}', '${m.joinDate || ''}', '${m.status}')">✏ EDIT</button>
+            <button class="btn btn-danger" onclick="deleteMember(${m.id})">🗑 DELETE</button>
+          `;
+        });
+      } catch (err) {
+        showMsg('Cannot connect to cosmic server: ' + err.message, 'error');
+      }
+    }
+
+    async function saveMember() {
+      const id = document.getElementById('memberId').value;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const joinDate = document.getElementById('joinDate').value;
+      const status = document.getElementById('status').value;
+
+      if (!name || !email || !phone) {
+        showMsg('Please fill all required fields!', 'error');
+        return;
+      }
+
+      const data = {
+        name: name,
+        email: email,
+        phone: phone,
+        joinDate: joinDate,
+        status: status
+      };
+
+      const url = id ? `${API}/${id}` : API;
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          showMsg(id ? '✅ Member updated successfully!' : '✅ Member added to the galaxy!', 'success');
+          resetForm();
+          loadMembers();
+        } else {
+          const err = await res.json();
+          showMsg('❌ Failed: ' + JSON.stringify(err), 'error');
+        }
+      } catch (err) {
+        showMsg('Connection error: ' + err.message, 'error');
+      }
+    }
+
+    function editMember(id, name, email, phone, joinDate, status) {
+      document.getElementById('memberId').value = id;
+      document.getElementById('name').value = name;
+      document.getElementById('email').value = email;
+      document.getElementById('phone').value = phone;
+      document.getElementById('joinDate').value = joinDate;
+      document.getElementById('status').value = status;
+      document.getElementById('formTitle').textContent = '⬩ EDIT MEMBER';
+    }
+
+    async function deleteMember(id) {
+      if (!confirm('⚠️ Remove this member from the galaxy?')) return;
+      try {
+        const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          showMsg('✅ Member deleted successfully!', 'success');
+          loadMembers();
+        } else {
+          showMsg('Delete failed', 'error');
+        }
+      } catch (err) {
+        showMsg('Delete error: ' + err.message, 'error');
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('memberId').value = '';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('joinDate').value = '';
+      document.getElementById('status').value = 'ACTIVE';
+      document.getElementById('formTitle').textContent = '⬩ ADD NEW MEMBER';
+    }
+
+    // Load members on page load
+    loadMembers();
+  </script>
+</body>
+</html>

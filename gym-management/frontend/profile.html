@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | Gym Universe</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #020010;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Galaxy Animation */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle linear infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+    
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      animation: nebulaPulse ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes nebulaPulse {
+      0%, 100% { transform: scale(1); opacity: 0.2; }
+      50% { transform: scale(1.2); opacity: 0.45; }
+    }
+    
+    .n1 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #9b4dff, #2a00aa, transparent);
+      top: -180px;
+      left: -180px;
+      animation-duration: 9s;
+    }
+    
+    .n2 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #00a6ff, #0044cc, transparent);
+      bottom: -120px;
+      right: -100px;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+    
+    /* Navbar */
+    .navbar {
+      background: rgba(10, 0, 40, 0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(123, 47, 255, 0.4);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #9b4dff, #00cfff, #ff66cc);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: galaxyShine 5s linear infinite;
+      letter-spacing: 3px;
+    }
+    
+    @keyframes galaxyShine {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    
+    .nav-links a {
+      color: rgba(170, 140, 255, 0.8);
+      text-decoration: none;
+      margin-left: 22px;
+      font-size: 12px;
+      padding: 7px 16px;
+      border-radius: 30px;
+      transition: all 0.3s;
+      font-family: 'Orbitron', monospace;
+    }
+    
+    .nav-links a:hover {
+      color: #fff;
+      border-color: rgba(155, 77, 255, 0.6);
+      background: rgba(123, 47, 255, 0.2);
+    }
+    
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .profile-icon {
+      background: linear-gradient(135deg, #7b2fff, #0066ff);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    
+    .profile-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(123,47,255,0.5);
+    }
+    
+    .profile-icon img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .user-badge {
+      background: rgba(123, 47, 255, 0.25);
+      border: 1px solid rgba(155, 77, 255, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #cbb2ff;
+      font-family: 'Orbitron', monospace;
+    }
+    
+    .logout-btn {
+      background: rgba(255, 80, 120, 0.2);
+      border: 1px solid rgba(255, 80, 120, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #ff6680;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 80, 120, 0.4);
+      box-shadow: 0 0 10px #ff3366;
+    }
+    
+    /* Container */
+    .container {
+      padding: 40px;
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Profile Card */
+    .profile-card {
+      background: rgba(12, 2, 32, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(123, 47, 255, 0.4);
+      border-radius: 30px;
+      padding: 40px;
+      animation: fadeInUp 0.6s ease both;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .profile-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .profile-avatar {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      cursor: pointer;
+    }
+    
+    .avatar-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #7b2fff;
+      box-shadow: 0 0 30px rgba(123,47,255,0.5);
+      transition: all 0.3s;
+    }
+    
+    .avatar-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.3s;
+      border-radius: 50%;
+    }
+    
+    .profile-avatar:hover .avatar-overlay {
+      opacity: 1;
+    }
+    
+    .camera-icon {
+      font-size: 30px;
+      color: white;
+    }
+    
+    .profile-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 28px;
+      background: linear-gradient(135deg, #b77eff, #3cc7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    
+    .profile-role {
+      color: rgba(150,120,255,0.7);
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+    
+    .profile-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-top: 30px;
+    }
+    
+    .info-item {
+      background: rgba(155, 77, 255, 0.08);
+      border: 1px solid rgba(155, 77, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+    
+    .info-item:hover {
+      border-color: #7b2fff;
+      background: rgba(155, 77, 255, 0.12);
+    }
+    
+    .info-label {
+      font-size: 11px;
+      color: #9b4dff;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    
+    .info-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .edit-btn {
+      background: linear-gradient(135deg, #7b2fff, #0066ff);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 40px;
+      color: white;
+      font-family: 'Orbitron', monospace;
+      cursor: pointer;
+      margin-top: 30px;
+      width: 100%;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    
+    .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(123,47,255,0.4);
+    }
+    
+    /* Modal for editing profile */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: rgba(12, 2, 32, 0.95);
+      border: 1px solid #7b2fff;
+      border-radius: 30px;
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      animation: fadeInUp 0.3s ease;
+    }
+    
+    .modal-content h3 {
+      font-family: 'Orbitron', monospace;
+      margin-bottom: 20px;
+      color: #b77eff;
+    }
+    
+    .modal-content input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: rgba(155, 77, 255, 0.1);
+      border: 1px solid #7b2fff;
+      border-radius: 12px;
+      color: white;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .modal-buttons button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Orbitron', monospace;
+    }
+    
+    .save-btn {
+      background: linear-gradient(135deg, #7b2fff, #0066ff);
+      color: white;
+    }
+    
+    .cancel-btn {
+      background: rgba(255,80,120,0.2);
+      color: #ff6680;
+      border: 1px solid #ff6680;
+    }
+    
+    .msg {
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .success {
+      background: rgba(0,255,150,0.1);
+      border: 1px solid #00ff96;
+      color: #00ff96;
+    }
+    
+    .error {
+      background: rgba(255,50,100,0.1);
+      border: 1px solid #ff3264;
+      color: #ff3264;
+    }
+    
+    @media (max-width: 768px) {
+      .profile-info { grid-template-columns: 1fr; }
+      .container { padding: 20px; }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+  <div class="nebula n1"></div>
+  <div class="nebula n2"></div>
+
+  <div class="navbar">
+    <h1>🏃 GYM UNIVERSE</h1>
+    <div class="nav-links">
+      <a href="dashboard.html">⚡ DASHBOARD</a>
+      <a href="members.html">👥 MEMBERS</a>
+      <a href="trainers.html">🏋️ TRAINERS</a>
+      <a href="plans.html">📘 PLANS</a>
+      <a href="payments.html">💰 PAYMENTS</a>
+    </div>
+    <div class="nav-right">
+      <div class="profile-icon" onclick="window.location.href='profile.html'">
+        <img id="navProfileImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Profile">
+      </div>
+      <span class="user-badge" id="userBadge">🌙 USER</span>
+      <button class="logout-btn" onclick="logout()">⛌ LOGOUT</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="msg"></div>
+    
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" onclick="document.getElementById('avatarInput').click()">
+          <img id="profileAvatar" class="avatar-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Profile">
+          <div class="avatar-overlay">
+            <span class="camera-icon">📸</span>
+          </div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="uploadAvatar(this)">
+        <h2 id="profileName" class="profile-name">Loading...</h2>
+        <p class="profile-role">⭐ MEMBER ⭐</p>
+      </div>
+      
+      <div class="profile-info">
+        <div class="info-item">
+          <div class="info-label">📧 EMAIL</div>
+          <div class="info-value" id="profileEmail">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">📱 PHONE</div>
+          <div class="info-value" id="profilePhone">Not set</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">📍 MEMBERSHIP</div>
+          <div class="info-value" id="profileMembership">Premium Member</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">🏆 JOINED</div>
+          <div class="info-value" id="profileJoinDate">-</div>
+        </div>
+      </div>
+      
+      <button class="edit-btn" onclick="openEditModal()">✏️ EDIT PROFILE</button>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3>✏️ EDIT PROFILE</h3>
+      <input type="text" id="editName" placeholder="Full Name">
+      <input type="email" id="editEmail" placeholder="Email">
+      <input type="tel" id="editPhone" placeholder="Phone Number">
+      <div class="modal-buttons">
+        <button class="save-btn" onclick="saveProfile()">💾 SAVE</button>
+        <button class="cancel-btn" onclick="closeEditModal()">❌ CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate Stars
+    const starContainer = document.getElementById('stars');
+    for (let i = 0; i < 180; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2.8 + 0.5;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${Math.random() * 3 + 1.8}s`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      starContainer.appendChild(star);
+    }
+
+    // Get logged-in user
+    const currentUser = localStorage.getItem('username') || 'Guest';
+    
+    // Update user badge
+    document.getElementById('userBadge').innerHTML = `👾 ${currentUser.toUpperCase()}`;
+    document.getElementById('profileName').innerText = currentUser;
+    
+    // Load profile data from localStorage
+    function loadProfile() {
+      const savedProfile = localStorage.getItem(`profile_${currentUser}`);
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        document.getElementById('profileEmail').innerText = profile.email || 'Not set';
+        document.getElementById('profilePhone').innerText = profile.phone || 'Not set';
+        document.getElementById('profileMembership').innerText = profile.membership || 'Premium Member';
+        document.getElementById('profileJoinDate').innerText = profile.joinDate || new Date().toLocaleDateString();
+        
+        if (profile.avatar) {
+          document.getElementById('profileAvatar').src = profile.avatar;
+          document.getElementById('navProfileImg').src = profile.avatar;
+        }
+      } else {
+        // Default profile
+        document.getElementById('profileEmail').innerText = `${currentUser}@gymuniverse.com`;
+        document.getElementById('profileJoinDate').innerText = new Date().toLocaleDateString();
+      }
+    }
+    
+    // Upload avatar to file explorer and save
+    function uploadAvatar(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const avatarUrl = e.target.result;
+          document.getElementById('profileAvatar').src = avatarUrl;
+          document.getElementById('navProfileImg').src = avatarUrl;
+          
+          // Save to localStorage
+          const savedProfile = localStorage.getItem(`profile_${currentUser}`);
+          let profile = savedProfile ? JSON.parse(savedProfile) : {};
+          profile.avatar = avatarUrl;
+          localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
+          
+          showMsg('✅ Profile picture updated!', 'success');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    // Open edit modal
+    function openEditModal() {
+      const savedProfile = localStorage.getItem(`profile_${currentUser}`);
+      let profile = savedProfile ? JSON.parse(savedProfile) : {};
+      
+      document.getElementById('editName').value = currentUser;
+      document.getElementById('editEmail').value = profile.email || '';
+      document.getElementById('editPhone').value = profile.phone || '';
+      
+      document.getElementById('editModal').style.display = 'flex';
+    }
+    
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+    
+    function saveProfile() {
+      const newName = document.getElementById('editName').value;
+      const newEmail = document.getElementById('editEmail').value;
+      const newPhone = document.getElementById('editPhone').value;
+      
+      if (newName) {
+        localStorage.setItem('username', newName);
+        document.getElementById('profileName').innerText = newName;
+        document.getElementById('userBadge').innerHTML = `👾 ${newName.toUpperCase()}`;
+      }
+      
+      const savedProfile = localStorage.getItem(`profile_${currentUser}`);
+      let profile = savedProfile ? JSON.parse(savedProfile) : {};
+      profile.email = newEmail;
+      profile.phone = newPhone;
+      profile.membership = profile.membership || 'Premium Member';
+      profile.joinDate = profile.joinDate || new Date().toLocaleDateString();
+      
+      localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
+      
+      // If username changed, move data to new key
+      if (newName !== currentUser) {
+        localStorage.setItem(`profile_${newName}`, JSON.stringify(profile));
+        localStorage.removeItem(`profile_${currentUser}`);
+      }
+      
+      loadProfile();
+      closeEditModal();
+      showMsg('✅ Profile updated successfully!', 'success');
+    }
+    
+    function showMsg(text, type) {
+      const msgDiv = document.getElementById('msg');
+      msgDiv.innerHTML = `<div class="msg ${type}">🏃 ${text}</div>`;
+      setTimeout(() => msgDiv.innerHTML = '', 3000);
+    }
+    
+    function logout() {
+      showMsg('👋 Logging out...', 'success');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000);
+    }
+    
+    // Load profile on page load
+    loadProfile();
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('editModal');
+      if (event.target === modal) {
+        closeEditModal();
+      }
+    };
+  </script>
+</body>
+</html>

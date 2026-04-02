@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Gym Universe | Payments</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #020010;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ========= GALAXY ANIMATION LAYERS ========= */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle linear infinite;
+      box-shadow: 0 0 3px rgba(255,255,255,0.8);
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Nebula clouds */
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      animation: nebulaPulse ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes nebulaPulse {
+      0%, 100% { transform: scale(1); opacity: 0.2; }
+      50% { transform: scale(1.2); opacity: 0.45; }
+    }
+
+    .n1 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #9b4dff, #2a00aa, transparent);
+      top: -180px;
+      left: -180px;
+      animation-duration: 9s;
+    }
+
+    .n2 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #00a6ff, #0044cc, transparent);
+      bottom: -120px;
+      right: -100px;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+
+    .n3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #ff44cc, #aa22aa, transparent);
+      top: 40%;
+      left: 60%;
+      animation-duration: 12s;
+      animation-delay: 1s;
+      filter: blur(100px);
+    }
+
+    /* Floating dust particles (cosmic dust) */
+    .cosmic-dust {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .dust {
+      position: absolute;
+      background: rgba(255, 200, 255, 0.4);
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: floatDust linear infinite;
+    }
+    @keyframes floatDust {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100vh) translateX(40px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(10, 0, 40, 0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(123, 47, 255, 0.4);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .navbar h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #9b4dff, #00cfff, #ff66cc);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: galaxyShine 5s linear infinite;
+      letter-spacing: 3px;
+    }
+
+    @keyframes galaxyShine {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .nav-links a {
+      color: rgba(170, 140, 255, 0.8);
+      text-decoration: none;
+      margin-left: 22px;
+      font-size: 12px;
+      padding: 7px 16px;
+      border-radius: 30px;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      border-color: rgba(155, 77, 255, 0.6);
+      background: rgba(123, 47, 255, 0.2);
+      box-shadow: 0 0 12px rgba(155, 77, 255, 0.5);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-badge {
+      background: rgba(123, 47, 255, 0.25);
+      border: 1px solid rgba(155, 77, 255, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #cbb2ff;
+      font-family: 'Orbitron', monospace;
+      backdrop-filter: blur(4px);
+    }
+
+    .logout-btn {
+      background: rgba(255, 80, 120, 0.2);
+      border: 1px solid rgba(255, 80, 120, 0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #ff6680;
+      cursor: pointer;
+      font-family: 'Orbitron', monospace;
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 80, 120, 0.4);
+      box-shadow: 0 0 10px #ff3366;
+      color: white;
+    }
+
+    /* Container */
+    .container {
+      padding: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #b77eff, #3cc7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 4px;
+      animation: fadeInUp 0.6s ease both;
+      text-shadow: 0 0 8px rgba(155,77,255,0.3);
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Form Card - Glassmorphic Galaxy */
+    .form-card {
+      background: rgba(12, 2, 32, 0.7);
+      border: 1px solid rgba(123, 47, 255, 0.4);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 35px;
+      backdrop-filter: blur(16px);
+      animation: fadeInUp 0.6s ease 0.08s both;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .form-card h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #d4b5ff;
+      letter-spacing: 2px;
+      border-left: 3px solid #9b4dff;
+      padding-left: 12px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(155, 77, 255, 0.08);
+      border: 1px solid rgba(155, 77, 255, 0.35);
+      border-radius: 14px;
+      color: #f0f0ff;
+      font-size: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #b77eff;
+      background: rgba(155, 77, 255, 0.18);
+      box-shadow: 0 0 18px rgba(155, 77, 255, 0.3);
+    }
+
+    input::placeholder {
+      color: rgba(170, 140, 255, 0.5);
+    }
+
+    select option {
+      background: #0b0022;
+      color: #e0ccff;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 28px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1.2px;
+      transition: all 0.25s;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: linear-gradient(115deg, #7b2fff, #3c67ff);
+      color: white;
+      box-shadow: 0 4px 12px rgba(123,47,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(123, 47, 255, 0.5);
+      background: linear-gradient(115deg, #8f47ff, #4f77ff);
+    }
+
+    .btn-clear {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(210, 180, 255, 0.8);
+      border: 1px solid rgba(155, 77, 255, 0.4);
+      margin-left: 12px;
+    }
+
+    .btn-clear:hover {
+      background: rgba(155, 77, 255, 0.25);
+      color: white;
+    }
+
+    .btn-danger {
+      background: rgba(255, 70, 110, 0.2);
+      color: #ff6680;
+      border: 1px solid rgba(255, 70, 110, 0.5);
+    }
+
+    .btn-danger:hover {
+      background: rgba(255, 70, 110, 0.4);
+      color: #ffa0b0;
+      transform: scale(0.96);
+    }
+
+    /* Messages */
+    .msg {
+      padding: 12px 20px;
+      border-radius: 40px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+    }
+
+    .success {
+      background: rgba(0, 210, 150, 0.12);
+      border: 1px solid rgba(0, 255, 180, 0.4);
+      color: #80ffcc;
+    }
+
+    .error {
+      background: rgba(255, 70, 100, 0.12);
+      border: 1px solid rgba(255, 80, 120, 0.4);
+      color: #ff8095;
+    }
+
+    /* Table Galaxy Style */
+    .glass-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(8, 0, 28, 0.65);
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(123, 47, 255, 0.25);
+      animation: fadeInUp 0.6s ease 0.15s both;
+    }
+
+    .glass-table th {
+      background: rgba(100, 50, 200, 0.3);
+      color: #dac5ff;
+      padding: 14px 18px;
+      text-align: left;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      border-bottom: 1px solid rgba(155, 77, 255, 0.4);
+    }
+
+    .glass-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(123, 47, 255, 0.15);
+      font-size: 14px;
+      color: #ececff;
+    }
+
+    .glass-table tr:hover td {
+      background: rgba(123, 47, 255, 0.12);
+      transition: 0.2s;
+    }
+
+    /* Payment badges */
+    .badge-paid {
+      background: rgba(0, 255, 150, 0.12);
+      border: 1px solid rgba(0, 255, 150, 0.4);
+      color: #44ffaa;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .badge-pending {
+      background: rgba(255, 200, 50, 0.12);
+      border: 1px solid rgba(255, 200, 80, 0.5);
+      color: #ffd966;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 100, 120, 0.5);
+      color: #ff7080;
+      padding: 5px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .action-btn:hover {
+      background: rgba(255, 70, 100, 0.3);
+      color: white;
+    }
+
+    @media (max-width: 780px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; gap: 12px; }
+      .container { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Galactic background layers -->
+  <div class="stars" id="stars"></div>
+  <div class="nebula n1"></div>
+  <div class="nebula n2"></div>
+  <div class="nebula n3"></div>
+  <div class="cosmic-dust" id="cosmicDust"></div>
+
+  <!-- Navbar with cosmic vibe -->
+  <div class="navbar">
+    <h1>🏃GYM UNIVERSE</h1>
+    <div class="nav-links">
+      <a href="dashboard.html">⚡ DASHBOARD</a>
+      <a href="members.html">👥 MEMBERS</a>
+      <a href="trainers.html">🏋️ TRAINERS</a>
+      <a href="plans.html">📘 PLANS</a>
+      <a href="payments.html">💰 PAYMENTS</a>
+    </div>
+    <div class="nav-right">
+      <span class="user-badge" id="userBadge">🌙 USER</span>
+      <button class="logout-btn" onclick="logout()">⛌ LOGOUT</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-title">✦ GALACTIC PAYMENTS ✦</div>
+    <div id="msg"></div>
+
+    <!-- Add Payment Form -->
+    <div class="form-card">
+      <h3>⬩ ADD STAR PAYMENT</h3>
+      <div class="form-grid">
+        <input type="number" id="memberId" placeholder="Member ID (cosmic code)">
+        <input type="number" id="amount" placeholder="Amount (₹)">
+        <input type="date" id="paymentDate">
+        <select id="status">
+          <option value="PAID">✨ PAID</option>
+          <option value="PENDING">🌙 PENDING</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="savePayment()">💫 SAVE TRANSACTION</button>
+      <button class="btn btn-clear" onclick="resetForm()">🪐 CLEAR</button>
+    </div>
+
+    <!-- Payment Records Table -->
+    <table class="glass-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>MEMBER ID</th>
+          <th>AMOUNT</th>
+          <th>PAYMENT DATE</th>
+          <th>STATUS</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody id="paymentTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // ================ GALAXY & ANIMATION EFFECTS (same as sample with extra dust) ============
+    // Generate stars
+    const starContainer = document.getElementById('stars');
+    for (let i = 0; i < 180; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2.8 + 0.5;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${Math.random() * 3 + 1.8}s`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      starContainer.appendChild(star);
+    }
+
+    // Cosmic dust particles (floating)
+    const dustLayer = document.getElementById('cosmicDust');
+    for (let i = 0; i < 60; i++) {
+      const dust = document.createElement('div');
+      dust.classList.add('dust');
+      const wh = Math.random() * 3 + 1;
+      dust.style.width = `${wh}px`;
+      dust.style.height = `${wh}px`;
+      dust.style.left = `${Math.random() * 100}%`;
+      dust.style.bottom = `-10px`;
+      dust.style.animationDuration = `${Math.random() * 8 + 6}s`;
+      dust.style.animationDelay = `${Math.random() * 8}s`;
+      dust.style.opacity = Math.random() * 0.6 + 0.2;
+      dustLayer.appendChild(dust);
+    }
+
+    // User badge & logout from localStorage
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      document.getElementById('userBadge').innerHTML = `👾 ${storedUsername.toUpperCase()}`;
+    } else {
+      document.getElementById('userBadge').innerHTML = `🌟 GUEST`;
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      window.location.href = 'login.html';
+    }
+
+    // ================ PAYMENT API CONFIG ================
+    const API = 'http://localhost:8080/api/payments';
+
+    function showMsg(text, type) {
+      const msgDiv = document.getElementById('msg');
+      msgDiv.innerHTML = `<div class="msg ${type}">🏃 ${text}</div>`;
+      setTimeout(() => msgDiv.innerHTML = '', 3400);
+    }
+
+    async function loadPayments() {
+      try {
+        const res = await fetch(API);
+        if (!res.ok) throw new Error('API error');
+        const payments = await res.json();
+        const tbody = document.getElementById('paymentTable');
+        tbody.innerHTML = '';
+        if (payments.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#aa99ff;">✨ No stellar payments yet ✨</td></tr>`;
+          return;
+        }
+        payments.forEach(p => {
+          const row = tbody.insertRow();
+          row.insertCell(0).innerText = p.id;
+          row.insertCell(1).innerText = p.memberId;
+          row.insertCell(2).innerHTML = `₹${parseFloat(p.amount).toFixed(2)}`;
+          row.insertCell(3).innerText = p.paymentDate || '—';
+          const statusCell = row.insertCell(4);
+          const statusSpan = document.createElement('span');
+          statusSpan.className = p.status === 'PAID' ? 'badge-paid' : 'badge-pending';
+          statusSpan.innerText = p.status;
+          statusCell.appendChild(statusSpan);
+          const actionCell = row.insertCell(5);
+          const delBtn = document.createElement('button');
+          delBtn.innerText = '🗑 DELETE';
+          delBtn.className = 'action-btn';
+          delBtn.onclick = () => deletePayment(p.id);
+          actionCell.appendChild(delBtn);
+        });
+      } catch (err) {
+        showMsg('Cannot reach cosmic server: ' + err.message, 'error');
+      }
+    }
+
+    async function savePayment() {
+      const memberIdVal = document.getElementById('memberId').value;
+      const amountVal = document.getElementById('amount').value;
+      const paymentDateVal = document.getElementById('paymentDate').value;
+      const statusVal = document.getElementById('status').value;
+
+      if (!memberIdVal || !amountVal) {
+        showMsg('Please enter Member ID and Amount', 'error');
+        return;
+      }
+      if (parseFloat(amountVal) <= 0) {
+        showMsg('Amount must be greater than zero', 'error');
+        return;
+      }
+
+      const data = {
+        memberId: parseInt(memberIdVal),
+        amount: parseFloat(amountVal),
+        paymentDate: paymentDateVal,
+        status: statusVal
+      };
+
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          showMsg('💎 Payment added to galaxy ledger!', 'success');
+          resetForm();
+          loadPayments();
+        } else {
+          const err = await res.json();
+          showMsg('❌ Failed: ' + JSON.stringify(err), 'error');
+        }
+      } catch (err) {
+        showMsg('Connection error: ' + err.message, 'error');
+      }
+    }
+
+    async function deletePayment(id) {
+      if (!confirm('Remove this payment record from the cosmos?')) return;
+      try {
+        const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          showMsg('✅ Payment deleted successfully', 'success');
+          loadPayments();
+        } else {
+          showMsg('Delete failed', 'error');
+        }
+      } catch (err) {
+        showMsg('Delete error: ' + err.message, 'error');
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('memberId').value = '';
+      document.getElementById('amount').value = '';
+      document.getElementById('paymentDate').value = '';
+      document.getElementById('status').value = 'PAID';
+    }
+
+    // Load payments on page ready
+    loadPayments();
+  </script>
+</body>
+</html>

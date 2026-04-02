@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | Gym Universe</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #020010;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Galaxy Animation Layers */
+    .stars { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      z-index: 0; 
+      pointer-events: none; 
+    }
+    
+    .star { 
+      position: absolute; 
+      background: white; 
+      border-radius: 50%; 
+      animation: twinkle linear infinite; 
+      box-shadow: 0 0 3px rgba(255,255,255,0.8);
+    }
+    
+    @keyframes twinkle { 
+      0%,100%{ opacity:0.2; transform:scale(1); } 
+      50%{ opacity:1; transform:scale(1.5); } 
+    }
+
+    /* Nebula Clouds */
+    .nebula { 
+      position: fixed; 
+      border-radius: 50%; 
+      filter: blur(80px); 
+      z-index: 0; 
+      animation: nebulaPulse ease-in-out infinite; 
+      pointer-events: none; 
+    }
+    
+    @keyframes nebulaPulse { 
+      0%,100%{ transform:scale(1); opacity:0.2; } 
+      50%{ transform:scale(1.2); opacity:0.45; } 
+    }
+    
+    .n1 { 
+      width:550px; height:550px;
+      background: radial-gradient(circle, #9b4dff, #2a00aa, transparent);
+      top:-180px; left:-180px;
+      animation-duration:9s;
+    }
+    
+    .n2 { 
+      width:480px; height:480px;
+      background: radial-gradient(circle, #00a6ff, #0044cc, transparent);
+      bottom:-120px; right:-100px;
+      animation-duration:7s;
+      animation-delay:2s;
+    }
+    
+    .n3 { 
+      width:400px; height:400px;
+      background: radial-gradient(circle, #ff44cc, #aa22aa, transparent);
+      top:40%; left:60%;
+      animation-duration:12s;
+      animation-delay:1s;
+      filter: blur(100px);
+    }
+    
+    .n4 {
+      width:350px; height:350px;
+      background: radial-gradient(circle, #00ff96, #00a6ff, transparent);
+      bottom:20%; left:10%;
+      animation-duration:10s;
+      animation-delay:3s;
+    }
+
+    /* Cosmic Dust Particles */
+    .cosmic-dust {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .dust {
+      position: absolute;
+      background: rgba(255, 200, 255, 0.4);
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: floatDust linear infinite;
+    }
+    
+    @keyframes floatDust {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100vh) translateX(40px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Shooting Stars */
+    .shoot { 
+      position: fixed; 
+      width:120px; 
+      height:2px; 
+      background: linear-gradient(90deg, transparent, #7b2fff, white); 
+      border-radius: 2px; 
+      animation: shoot linear infinite; 
+      z-index: 1; 
+      pointer-events: none; 
+    }
+    
+    @keyframes shoot { 
+      0%{ transform:translateX(-200px) translateY(0) rotate(-35deg); opacity:0; } 
+      10%{ opacity:1; } 
+      100%{ transform:translateX(110vw) translateY(80vh) rotate(-35deg); opacity:0; } 
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(10,0,40,0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(123,47,255,0.4);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: slideDown 0.6s ease;
+    }
+
+    @keyframes slideDown { 
+      from{ transform:translateY(-100%); opacity:0; } 
+      to{ transform:translateY(0); opacity:1; } 
+    }
+
+    .navbar h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #9b4dff, #00cfff, #ff66cc);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: galaxyShine 5s linear infinite;
+      letter-spacing: 3px;
+    }
+
+    @keyframes galaxyShine { 
+      0%{ background-position:0% center; } 
+      100%{ background-position:200% center; } 
+    }
+
+    .nav-links a {
+      color: rgba(170,140,255,0.8);
+      text-decoration: none;
+      margin-left: 22px;
+      font-size: 12px;
+      padding: 7px 16px;
+      border-radius: 30px;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      border-color: rgba(155,77,255,0.6);
+      background: rgba(123,47,255,0.2);
+      box-shadow: 0 0 12px rgba(155,77,255,0.5);
+      transform: translateY(-2px);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-icon {
+      background: linear-gradient(135deg, #7b2fff, #0066ff);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid rgba(255,255,255,0.3);
+      overflow: hidden;
+    }
+    
+    .profile-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(123,47,255,0.5);
+    }
+    
+    .profile-icon img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-badge {
+      background: rgba(123,47,255,0.25);
+      border: 1px solid rgba(155,77,255,0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #cbb2ff;
+      font-family: 'Orbitron', monospace;
+      backdrop-filter: blur(4px);
+    }
+
+    .logout-btn {
+      background: rgba(255,80,120,0.2);
+      border: 1px solid rgba(255,80,120,0.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: #ff6680;
+      cursor: pointer;
+      font-family: 'Orbitron', monospace;
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover { 
+      background: rgba(255,80,120,0.4); 
+      box-shadow: 0 0 15px rgba(255,80,120,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Container */
+    .container { 
+      padding: 40px; 
+      position: relative; 
+      z-index: 2; 
+    }
+
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #b77eff, #3cc7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 4px;
+      animation: fadeInUp 0.6s ease both;
+      text-shadow: 0 0 8px rgba(155,77,255,0.3);
+    }
+
+    @keyframes fadeInUp { 
+      from{ transform:translateY(30px); opacity:0; } 
+      to{ transform:translateY(0); opacity:1; } 
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(12,2,32,0.7);
+      border: 1px solid rgba(123,47,255,0.4);
+      border-radius: 24px;
+      padding: 28px;
+      text-align: center;
+      backdrop-filter: blur(16px);
+      transition: all 0.4s ease;
+      animation: fadeInUp 0.6s ease both;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(155,77,255,0.15), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .card:hover::before { left: 100%; }
+
+    .card:nth-child(1) { animation-delay:0.1s; border-top: 3px solid #7b2fff; }
+    .card:nth-child(2) { animation-delay:0.2s; border-top: 3px solid #00cfff; }
+    .card:nth-child(3) { animation-delay:0.3s; border-top: 3px solid #ff44cc; }
+    .card:nth-child(4) { animation-delay:0.4s; border-top: 3px solid #00ff96; }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(123,47,255,0.3), 0 0 30px rgba(123,47,255,0.2);
+      border-color: rgba(155,77,255,0.6);
+    }
+
+    .card-icon { 
+      font-size: 42px; 
+      margin-bottom: 12px; 
+      filter: drop-shadow(0 0 15px rgba(123,47,255,0.8));
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-8px); }
+    }
+
+    .card h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 42px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #b77eff, #9b4dff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 10px 0;
+    }
+
+    .card:nth-child(2) h3 { background: linear-gradient(135deg,#00cfff,#3c67ff); -webkit-background-clip:text; }
+    .card:nth-child(3) h3 { background: linear-gradient(135deg,#ff44cc,#9b4dff); -webkit-background-clip:text; }
+    .card:nth-child(4) h3 { background: linear-gradient(135deg,#00ff96,#00cfff); -webkit-background-clip:text; }
+
+    .card p { 
+      color: rgba(170,140,255,0.7); 
+      margin-top: 8px; 
+      font-size: 13px; 
+      letter-spacing: 1.5px;
+      font-family: 'Orbitron', monospace;
+    }
+
+    /* Links Section */
+    .links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .link-card {
+      background: rgba(12,2,32,0.7);
+      border: 1px solid rgba(123,47,255,0.4);
+      color: white;
+      padding: 28px 20px;
+      border-radius: 24px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      animation: fadeInUp 0.6s ease both;
+      backdrop-filter: blur(16px);
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-card:nth-child(1) { animation-delay:0.5s; }
+    .link-card:nth-child(2) { animation-delay:0.6s; }
+    .link-card:nth-child(3) { animation-delay:0.7s; }
+    .link-card:nth-child(4) { animation-delay:0.8s; }
+
+    .link-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(155,77,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .link-card:hover::before { left: 100%; }
+
+    .link-card:hover {
+      background: linear-gradient(135deg, rgba(123,47,255,0.3), rgba(0,102,255,0.2));
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 15px 35px rgba(123,47,255,0.3), 0 0 30px rgba(123,47,255,0.2);
+      border-color: rgba(155,77,255,0.7);
+    }
+
+    .link-card .icon { 
+      font-size: 36px; 
+      margin-bottom: 12px; 
+      display: block;
+      filter: drop-shadow(0 0 10px rgba(123,47,255,0.8));
+      transition: transform 0.3s ease;
+    }
+    
+    .link-card:hover .icon { transform: scale(1.1); }
+
+    .link-card span:last-child {
+      font-size: 13px;
+      font-weight: 600;
+      display: block;
+    }
+
+    /* Modal Styles for Popup */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(15px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .modal-content {
+      background: rgba(12,2,32,0.95);
+      border: 2px solid #7b2fff;
+      border-radius: 30px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+      box-shadow: 0 0 50px rgba(123,47,255,0.3);
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid rgba(123,47,255,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(123,47,255,0.2), rgba(0,102,255,0.1));
+      border-radius: 28px 28px 0 0;
+    }
+    
+    .modal-header h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 20px;
+      color: #b77eff;
+    }
+    
+    .close-modal {
+      background: rgba(255,80,120,0.2);
+      border: 1px solid #ff6680;
+      color: #ff6680;
+      font-size: 24px;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .close-modal:hover {
+      background: rgba(255,80,120,0.4);
+      transform: scale(1.1);
+    }
+    
+    .modal-body {
+      padding: 20px 25px;
+    }
+    
+    .list-item {
+      background: rgba(155,77,255,0.08);
+      border: 1px solid rgba(155,77,255,0.2);
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 12px;
+      transition: all 0.3s;
+    }
+    
+    .list-item:hover {
+      background: rgba(155,77,255,0.15);
+      border-color: #7b2fff;
+      transform: translateX(5px);
+    }
+    
+    .list-item h4 {
+      color: #b77eff;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    
+    .list-item p {
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      margin: 4px 0;
+    }
+    
+    .list-item .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+    
+    .badge-active { background: rgba(0,255,150,0.2); color: #00ff96; border: 1px solid #00ff96; }
+    .badge-inactive { background: rgba(255,70,100,0.2); color: #ff6680; border: 1px solid #ff6680; }
+    .badge-paid { background: rgba(0,255,150,0.2); color: #00ff96; border: 1px solid #00ff96; }
+    .badge-pending { background: rgba(255,200,0,0.2); color: #ffd966; border: 1px solid #ffd966; }
+    
+    .empty-message {
+      text-align: center;
+      color: rgba(170,140,255,0.6);
+      padding: 40px;
+      font-size: 16px;
+    }
+    
+    @media (max-width: 1024px) {
+      .cards, .links { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .cards, .links { grid-template-columns: 1fr; }
+      .container { padding: 20px; }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; gap: 12px; }
+      .nav-links a { margin-left: 8px; padding: 5px 10px; font-size: 10px; }
+      .card h3 { font-size: 32px; }
+      .modal-content { width: 95%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Galaxy Background Layers -->
+  <div class="stars" id="stars"></div>
+  <div class="nebula n1"></div>
+  <div class="nebula n2"></div>
+  <div class="nebula n3"></div>
+  <div class="nebula n4"></div>
+  <div class="cosmic-dust" id="cosmicDust"></div>
+  
+  <!-- Shooting Stars -->
+  <div class="shoot" style="top:15%; animation-duration:4.5s; animation-delay:0s;"></div>
+  <div class="shoot" style="top:45%; animation-duration:6s; animation-delay:2s;"></div>
+  <div class="shoot" style="top:70%; animation-duration:5.5s; animation-delay:4s;"></div>
+  <div class="shoot" style="top:85%; animation-duration:7s; animation-delay:1s;"></div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1>🏃 GYM UNIVERSE</h1>
+    <div class="nav-links">
+      <a href="dashboard.html">⚡ DASHBOARD</a>
+      <a href="members.html">👥 MEMBERS</a>
+      <a href="trainers.html">🏋️ TRAINERS</a>
+      <a href="plans.html">📘 PLANS</a>
+      <a href="payments.html">💰 PAYMENTS</a>
+    </div>
+    <div class="nav-right">
+      <div class="profile-icon" onclick="window.location.href='profile.html'">
+        <img id="navProfileImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Profile">
+      </div>
+      <span class="user-badge" id="userBadge">🌙 USER</span>
+      <button class="logout-btn" onclick="logout()">⛌ LOGOUT</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-title">✦ GALACTIC DASHBOARD ✦</div>
+
+    <!-- Stats Cards -->
+    <div class="cards">
+      <div class="card" onclick="showDetails('members')">
+        <div class="card-icon">👥</div>
+        <h3 id="memberCount">0</h3>
+        <p>TOTAL MEMBERS</p>
+      </div>
+      <div class="card" onclick="showDetails('trainers')">
+        <div class="card-icon">🏋️</div>
+        <h3 id="trainerCount">0</h3>
+        <p>TOTAL TRAINERS</p>
+      </div>
+      <div class="card" onclick="showDetails('plans')">
+        <div class="card-icon">📋</div>
+        <h3 id="planCount">0</h3>
+        <p>WORKOUT PLANS</p>
+      </div>
+      <div class="card" onclick="showDetails('payments')">
+        <div class="card-icon">💰</div>
+        <h3 id="paymentCount">0</h3>
+        <p>TOTAL PAYMENTS</p>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="links">
+      <a href="members.html" class="link-card">
+        <span class="icon">👤</span>
+        <span>MANAGE MEMBERS</span>
+      </a>
+      <a href="trainers.html" class="link-card">
+        <span class="icon">🏋️</span>
+        <span>MANAGE TRAINERS</span>
+      </a>
+      <a href="plans.html" class="link-card">
+        <span class="icon">📋</span>
+        <span>MANAGE PLANS</span>
+      </a>
+      <a href="payments.html" class="link-card">
+        <span class="icon">💰</span>
+        <span>MANAGE PAYMENTS</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal Popup -->
+  <div id="detailsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Details</h2>
+        <div class="close-modal" onclick="closeModal()">✕</div>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Dynamic content will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate Stars
+    const starContainer = document.getElementById('stars');
+    for(let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2.8 + 0.5;
+      star.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        top: ${Math.random() * 100}%;
+        left: ${Math.random() * 100}%;
+        animation-duration: ${Math.random() * 3 + 1.8}s;
+        animation-delay: ${Math.random() * 5}s;
+      `;
+      starContainer.appendChild(star);
+    }
+
+    // Generate Cosmic Dust
+    const dustLayer = document.getElementById('cosmicDust');
+    for(let i = 0; i < 80; i++) {
+      const dust = document.createElement('div');
+      dust.classList.add('dust');
+      const wh = Math.random() * 3 + 1;
+      dust.style.width = `${wh}px`;
+      dust.style.height = `${wh}px`;
+      dust.style.left = `${Math.random() * 100}%`;
+      dust.style.bottom = `-10px`;
+      dust.style.animationDuration = `${Math.random() * 8 + 6}s`;
+      dust.style.animationDelay = `${Math.random() * 8}s`;
+      dust.style.opacity = Math.random() * 0.6 + 0.2;
+      dustLayer.appendChild(dust);
+    }
+
+    // User Badge & Profile
+    const storedUsername = localStorage.getItem('username');
+    if(storedUsername) {
+      document.getElementById('userBadge').innerHTML = `👾 ${storedUsername.toUpperCase()}`;
+    } else {
+      document.getElementById('userBadge').innerHTML = `🌟 GUEST`;
+    }
+    
+    // Load profile picture if exists
+    const savedProfile = localStorage.getItem(`profile_${storedUsername}`);
+    if(savedProfile) {
+      const profile = JSON.parse(savedProfile);
+      if(profile.avatar) {
+        document.getElementById('navProfileImg').src = profile.avatar;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      window.location.href = 'login.html';
+    }
+
+    const API = 'http://localhost:8080/api';
+
+    function animateCount(el, target) {
+      let current = 0;
+      const increment = Math.ceil(target / 40);
+      const timer = setInterval(() => {
+        current += increment;
+        if(current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = current;
+      }, 35);
+    }
+
+    // Store data globally
+    let membersData = [];
+    let trainersData = [];
+    let plansData = [];
+    let paymentsData = [];
+
+    async function loadCounts() {
+      try {
+        const [members, trainers, plans, payments] = await Promise.all([
+          fetch(`${API}/members`).then(res => res.json()).catch(() => []),
+          fetch(`${API}/trainers`).then(res => res.json()).catch(() => []),
+          fetch(`${API}/plans`).then(res => res.json()).catch(() => []),
+          fetch(`${API}/payments`).then(res => res.json()).catch(() => [])
+        ]);
+        
+        membersData = members;
+        trainersData = trainers;
+        plansData = plans;
+        paymentsData = payments;
+        
+        animateCount(document.getElementById('memberCount'), members.length || 0);
+        animateCount(document.getElementById('trainerCount'), trainers.length || 0);
+        animateCount(document.getElementById('planCount'), plans.length || 0);
+        animateCount(document.getElementById('paymentCount'), payments.length || 0);
+      } catch(e) {
+        console.error('API Error:', e);
+        document.getElementById('memberCount').textContent = '0';
+        document.getElementById('trainerCount').textContent = '0';
+        document.getElementById('planCount').textContent = '0';
+        document.getElementById('paymentCount').textContent = '0';
+      }
+    }
+
+    // Show details in modal
+    function showDetails(type) {
+      const modal = document.getElementById('detailsModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalBody = document.getElementById('modalBody');
+      
+      let html = '';
+      
+      switch(type) {
+        case 'members':
+          modalTitle.innerHTML = '👥 MEMBERS LIST';
+          if(membersData.length === 0) {
+            html = '<div class="empty-message">✨ No members found. Add your first member! ✨</div>';
+          } else {
+            membersData.forEach(m => {
+              html += `
+                <div class="list-item">
+                  <h4>${m.name}</h4>
+                  <p>📧 Email: ${m.email}</p>
+                  <p>📱 Phone: ${m.phone}</p>
+                  <p>📅 Join Date: ${m.joinDate || 'Not set'}</p>
+                  <span class="badge ${m.status === 'ACTIVE' ? 'badge-active' : 'badge-inactive'}">${m.status === 'ACTIVE' ? '✨ ACTIVE' : '🌙 INACTIVE'}</span>
+                </div>
+              `;
+            });
+          }
+          break;
+          
+        case 'trainers':
+          modalTitle.innerHTML = '🏋️ TRAINERS LIST';
+          if(trainersData.length === 0) {
+            html = '<div class="empty-message">✨ No trainers found. Add your first trainer! ✨</div>';
+          } else {
+            trainersData.forEach(t => {
+              html += `
+                <div class="list-item">
+                  <h4>${t.name}</h4>
+                  <p>📧 Email: ${t.email}</p>
+                  <p>🎯 Specialization: ${t.specialization || 'Not specified'}</p>
+                  <p>⭐ Experience: ${t.experience} years</p>
+                </div>
+              `;
+            });
+          }
+          break;
+          
+        case 'plans':
+          modalTitle.innerHTML = '📋 WORKOUT PLANS';
+          if(plansData.length === 0) {
+            html = '<div class="empty-message">✨ No workout plans found. Create your first plan! ✨</div>';
+          } else {
+            plansData.forEach(p => {
+              html += `
+                <div class="list-item">
+                  <h4>${p.planName}</h4>
+                  <p>⏱️ Duration: ${p.durationMonths} months</p>
+                  <p>💰 Price: ₹${p.price}</p>
+                  <p>📝 Description: ${p.description || 'No description'}</p>
+                </div>
+              `;
+            });
+          }
+          break;
+          
+        case 'payments':
+          modalTitle.innerHTML = '💰 PAYMENTS RECORD';
+          if(paymentsData.length === 0) {
+            html = '<div class="empty-message">✨ No payments recorded. Add payment records! ✨</div>';
+          } else {
+            paymentsData.forEach(p => {
+              html += `
+                <div class="list-item">
+                  <h4>Payment #${p.id}</h4>
+                  <p>👤 Member ID: ${p.memberId}</p>
+                  <p>💰 Amount: ₹${p.amount}</p>
+                  <p>📅 Date: ${p.paymentDate || 'Not set'}</p>
+                  <span class="badge ${p.status === 'PAID' ? 'badge-paid' : 'badge-pending'}">${p.status === 'PAID' ? '✅ PAID' : '⏳ PENDING'}</span>
+                </div>
+              `;
+            });
+          }
+          break;
+      }
+      
+      modalBody.innerHTML = html;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('detailsModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('detailsModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    loadCounts();
+  </script>
+</body>
+</html>
